@@ -53,8 +53,17 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Generate configuration file
-        run: make defconfig
+      - name: Checkout config
+        uses: actions/checkout@v4
+        with:
+          path: custom-def
+
+      - name: move config
+        run: |
+          rm -rf .config && mv custom-def/config .config
+        
+      # - name: Generate configuration file
+      #   run: make defconfig
 
       - name: Download packages
         run: make download -j16
